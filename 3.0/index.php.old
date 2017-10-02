@@ -1,0 +1,183 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Vijay
+ * Date: 05/09/17
+ * Time: 18:39
+ */
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../library/bootstrap4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../library/jquery-ui/css/jquery-ui-1.12.1.min.css" />
+    <!--    <link rel="stylesheet" href="../library/tether/dist/css/tether.min.css">-->
+    <link rel="stylesheet" href="../../icons.css">
+    <link rel="stylesheet" href="../../../library/font-awesome/css/font-awesome.min.css">
+    <title>MnR 3.0</title>
+    <style>
+        .navbar-custom {
+            background-color: #0275d8;
+        }
+        /* change the brand and text color */
+        .navbar-custom .navbar-brand,
+        .navbar-custom .navbar-text {
+            color: rgba(255,255,255,.8);
+        }
+        /* change the link color */
+        .navbar-custom .navbar-nav .nav-link {
+            color: rgba(255,255,255,.5);
+        }
+        /* change the color of active or hovered links */
+        .navbar-custom .nav-item.active .nav-link,
+        .navbar-custom .nav-item:hover .nav-link {
+            color: #ffffff;
+        }
+        .dropdown-toogle::after{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fa fa-bars"></i>
+                <span class="ml-2">Publicações</span>
+            </a>
+        </li>
+        <li>
+            <a class="navbar-brand ml-5" href="#">
+                <img src="images/mnr-logo.png" style="width: 60px; height: 30px; border-radius: 50%;"/>
+            </a>
+        </li>
+    </ul>
+    <form class="form-inline">
+        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/login') }}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/register') }}">Register</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="images/mnr-logo.png" style="width: 30px; border-radius: 50%;"/>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<main class="container">
+    A
+</main>
+</body>
+</html>
+<script type="text/javascript" src="../../../library/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../../library/jquery-ui/js/jquery-ui-1.10.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script type="text/javascript" src="../../../library/bootstrap4/js/bootstrap.min.js"></script>
+<script>
+    $.fn.serializeObject = function(){
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    $(document).ready(function(){
+
+
+    });
+
+
+//    var Effects = {
+//        Hover : {
+//
+//            },
+//            "iconChange" : function(obj, sClassName){
+//                obj.append(
+//                    $("<i>").addClass(Effects.Hover.iconCheck(obj, sClassName))
+//                );
+//            },
+//            "iconCheck" : function(obj, sClassName){
+//                var newClassName = "";
+//                if(!obj.hasClass("mnr-disabled")){
+//                    if (sClassName.includes("blue")) {
+//                        newClassName = sClassName.replace("blue", "white");
+//                    } else {
+//                        newClassName = sClassName.replace("white", "blue");
+//                    }
+//                }else{
+//                    newClassName = sClassName;
+//                }
+//                return newClassName;
+//            }
+//        },
+//        Click : {
+//        },
+//        Scroll : {
+//        }
+//    }
+
+    var Storage = {
+        db_name : "tour",
+        aTour : [],
+        convertoToJSON : function(oTour){
+            return JSON.stringify(oTour);
+        },
+        parseJSON : function(oJSON){
+            return JSON.parse(oJSON);
+        },
+        insert : function(oTour){
+            this.aTour.push(oTour);
+            sessionStorage.setItem(this.db_name, this.convertoToJSON(this.aTour));
+        },
+        delete : function(){
+            sessionStorage.removeItem(this.db_name);
+        },
+        update : function(){
+            console.error("Update não funciona, insira novamente");
+        },
+        select : function(){
+            return this.parseJSON(sessionStorage.getItem(this.db_name));
+        }
+    };
+
+    var Validation = {
+        bo : true,
+        fields : function(fieldset){
+            var qtdInput = fieldset.find("input").length;
+            var valores = "";
+            for(var i = 0;i < qtdInput;i++){
+                valores = fieldset.find("input").eq(i).val();
+                if(valores == ""){
+                    fieldset.find("input").eq(i)
+                        .addClass("is-invalid")
+                        .next().show();
+                }else{
+                    fieldset.find("input").eq(i)
+                        .removeClass("is-invalid")
+                        .next().hide();
+                }
+            }
+        }
+    }
+</script>
